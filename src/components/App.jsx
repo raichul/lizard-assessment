@@ -7,13 +7,13 @@
  * 
  */
 
-import Post from './Post';
+import Pagination from './Pagination';
 import '../styles/post.css';
 
 function App() {
   return (
     <div className="App">
-      <Post />
+      <Pagination itemsPerPage={10} />
     </div>
   );
 }

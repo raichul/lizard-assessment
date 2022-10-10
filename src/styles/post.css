@@ -19,6 +19,7 @@ h1 {
   }
   
   img {
+    margin: auto;
     height: 100px;
     width: auto;
   }
