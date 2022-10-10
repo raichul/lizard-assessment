@@ -4,11 +4,18 @@ import axios from 'axios';
 import '../styles/post.css';
 import '../styles/pagination.css';
 
-const items = [...Array(250).keys()];
+const items = [...Array(100).keys()];
 
+/**
+ * Takes posts and maps them to individual cards to form a list
+ * 
+ * @param {object} param0 
+ * @returns posts displayed in a list
+ */
 function Posts({ posts }) {
     return (
         <div>
+
         <h1>Posts</h1>
 
         <div className='item-container'>
@@ -21,15 +28,22 @@ function Posts({ posts }) {
                 {post.categories.map((category) => (
                     <li>{category.name}</li>
                 ))}
+                <br></br>
                 <p><i>{post.publishDate}</i></p>
             </div>
             ))}
         </div>
+
       </div>
     );
-    
   }
 
+  /**
+   * Retrieves API data and display them in pages
+   * 
+   * @param {int} param0 
+   * @returns paginated posts
+   */
 function Pagination({ itemsPerPage }) {
     // We start with an empty list of items.
     const [currentItems, setCurrentItems] = useState(null);
