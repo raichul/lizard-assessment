@@ -4,20 +4,17 @@ import axios from 'axios';
 import '../styles/post.css';
 import '../styles/pagination.css';
 
+// initialises the array for pagination
 const items = [...Array(100).keys()];
 
 /**
- * Takes posts and maps them to individual cards to form a list
+ * Takes array of posts and maps them to individual cards to form a list
  * 
  * @param {object} param0 
  * @returns posts displayed in a list
  */
 function Posts({ posts }) {
     return (
-        <div>
-
-        <h1>Posts</h1>
-
         <div className='item-container'>
             {posts && posts.map((post) => (
             <div className='card' key={post.id}>
@@ -33,15 +30,13 @@ function Posts({ posts }) {
             </div>
             ))}
         </div>
-
-      </div>
     );
   }
 
   /**
    * Retrieves API data and display them in pages
    * 
-   * @param {int} param0 
+   * @param {object} param0 
    * @returns paginated posts
    */
 function Pagination({ itemsPerPage }) {
@@ -51,6 +46,15 @@ function Pagination({ itemsPerPage }) {
     // Here we use item offsets; we could also use page offsets
     // following the API or data you're working with.
     const [itemOffset, setItemOffset] = useState(0);
+    // state for filtering
+    const [categoryFilter, setCategoryFilter] = useState("")
+
+    // Handles the input from categoryFilterSearchInput
+    let InputHandler = (e) => {
+        var lowerCase = e.target.value.toLowerCase();
+        setCategoryFilter(lowerCase);
+    }
+
   
     useEffect(() => {
       // scroll to top  
@@ -59,18 +63,31 @@ function Pagination({ itemsPerPage }) {
       // Fetch items from another resources.
       const endOffset = itemOffset + itemsPerPage;
       console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-
+      
+      // Fetch API data
       axios
       .get('/api/posts')
       .then((res) => {
         console.log(res)
         return res.data.posts;
       })
+      // Limit data to display based on category filter
+      .then((data) => {
+        if (categoryFilter === "" || categoryFilter.length === 1) {
+            return data
+        } else {
+            return data.filter((post) => {
+                const postCategories = post.categories.map((cat) => cat.name.toLowerCase())
+                return postCategories.includes(categoryFilter);
+            })
+        }
+      })
+      // Set posts to display in the current page
       .then((data) => {
         setCurrentItems(data.slice(itemOffset, endOffset));
       });
     setPageCount(Math.ceil(items.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage]);
+    }, [itemOffset, itemsPerPage, categoryFilter]);
   
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
@@ -83,6 +100,16 @@ function Pagination({ itemsPerPage }) {
   
     return (
       <>
+        <div className="header">
+        <h1>Posts</h1>
+        </div>
+        <div className="categoryFilterSearchDiv">
+        <input 
+          type='text' 
+          placeholder="Category Filter..." 
+          className="categoryFilterSearchInput"
+          onChange={InputHandler}></input>
+        </div>
         <Posts posts={currentItems} />
         <ReactPaginate
         nextLabel="next >"
@@ -108,4 +135,4 @@ function Pagination({ itemsPerPage }) {
     );
   }
 
-  export default Pagination
+  export default Pagination;

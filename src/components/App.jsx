@@ -5,10 +5,12 @@
  * Problem approach based on Adolf Schmuck's tutorial at 
  * https://betterprogramming.pub/fetching-and-displaying-data-in-react-part-1-d40fe279a8be
  * 
+ * All basic requirements fulfilled. Category filtering is done by search bar instead of select,
+ * the user has to input the exact search term (case insensitive) to filter the posts.
+ * 
  */
 
 import Pagination from './Pagination';
-import '../styles/post.css';
 
 function App() {
   return (
