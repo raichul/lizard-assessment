@@ -97,6 +97,14 @@ function Pagination({ itemsPerPage }) {
       );
       setItemOffset(newOffset);
     };
+
+    const clearF = () => {
+        var field = document.getElementById("category_filter_input");
+        if (field.value !== "") {
+            field.value = "";
+            setCategoryFilter("")
+        }
+    }
   
     return (
       <>
@@ -104,11 +112,17 @@ function Pagination({ itemsPerPage }) {
         <h1>Posts</h1>
         </div>
         <div className="categoryFilterSearchDiv">
-        <input 
-          type='text' 
-          placeholder="Category Filter..." 
-          className="categoryFilterSearchInput"
-          onChange={InputHandler}></input>
+            <input 
+            type='text' 
+            id="category_filter_input"
+            placeholder="Category Filter..." 
+            className="categoryFilterSearchInput"
+            onChange={InputHandler}>
+            </input>
+            <input 
+            type="button"
+            value="Clear"
+            onClick={clearF}></input>
         </div>
         <Posts posts={currentItems} />
         <ReactPaginate
