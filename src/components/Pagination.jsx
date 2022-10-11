@@ -98,6 +98,7 @@ function Pagination({ itemsPerPage }) {
       setItemOffset(newOffset);
     };
 
+    // Clears search field and resets filter
     const clearF = () => {
         var field = document.getElementById("category_filter_input");
         if (field.value !== "") {
